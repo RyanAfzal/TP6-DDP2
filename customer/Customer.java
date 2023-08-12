@@ -1,12 +1,16 @@
 package customer;
 
+import java.util.ArrayList;
+
 import order.Cart;
+import order.Order;
 import product.Product;
 
 public class Customer implements CanShop{
     //TODO: lengkapi kelas berikut
     protected String name;
     protected Cart cart;
+    protected ArrayList<Order> ordeHistory;
 
     public Customer (){
 
