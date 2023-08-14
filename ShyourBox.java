@@ -3,6 +3,7 @@ import java.util.Scanner;
 
 import customer.Customer;
 import customer.GoldCustomer;
+import order.OrderItem;
 import product.Product;
 import product.natural.Fruit;
 import product.natural.Veggie;
@@ -33,9 +34,20 @@ public class ShyourBox {
                     System.out.println("Masukkan nama pengguna:");
                     String user = scanner.next();
                     //TODO: implement Login
+                    Customer customer = app.searchCustomer(user);
+                    if(customer == null){
+                        System.out.println("Customer tidak ditemukan");
+                    }
+
+                    else{
+                        app.loginCustomer = customer;
+                        app.customerMenu();
+                    }
+                    break;
                 case 0:
                     System.out.println("Sampai Jumpa!");
                     break;
+
                 default:
                     System.out.println("Pilihan menu tidak valid.");
                     break;
@@ -65,10 +77,35 @@ public class ShyourBox {
                     break;
                 case 2:
                     //TODO : Implement add to cart
-                    
+                    for(Product product : products){
+                        System.out.println("Produk " + product.getName() + " memiliki stok " + product.getStock());
+                    }
+                    System.out.println();
+
+                    System.out.print("Nama produk yang ingin dibeli: ");
+                    String produkDibeli = scanner.next();
+                    System.out.print("Masukan jumlah produk yang ingin dibeli : ");
+                    int jmlProduk = scanner.nextInt();
+
+                    if(searchProduct(produkDibeli) != null){
+                        if(searchProduct(produkDibeli).getStock() >= jmlProduk){
+                            this.loginCustomer.addToCart(searchProduct(produkDibeli), jmlProduk);
+                            System.out.println("Berhasil menambahkan " + produkDibeli + " ke keranjang");
+                        }
+                        else{
+                            System.out.println("Stok produk tidak mencukupi");
+                        } 
+                    }
+
+                    else{
+                        System.out.println("Produk tidak ditemukan");
+                    }
+
                     break;
+
                 case 3:
                     //TODO: Implement Checkout
+                    this.loginCustomer.checkout();
                     break;
                 case 4:
                    //TODO: Implement Order History
@@ -116,12 +153,22 @@ public class ShyourBox {
      */
     public Product searchProduct(String name) {
         // TODO: Implement this method.
+        for(Product product : products){
+            if (product.getName().equalsIgnoreCase(name)){
+                return product;
+            }
+        }
 
         return null;
     }
 
     public Customer searchCustomer(String name) {
         // TODO: Implement this method.
+        for(Customer customer : customers){
+            if (customer.getName() != null && customer.getName().equalsIgnoreCase(name)){
+                return customer;
+            }
+        }
 
         return null;
     }

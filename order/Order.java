@@ -16,4 +16,8 @@ public class Order {
     public double getFinalPrice(){
         return 0.0;
     }
+
+    public void decreaseStockAllItem(){
+        
+    }
 }
