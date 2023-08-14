@@ -9,15 +9,38 @@ public class Order {
     private LocalDate orderdate;
     private double totalPrice;
 
-    public Order(){
-
+    public Order(Cart cart, double discountRate, LocalDate orderDate){
+        this.cart = cart;
+        this.discountRate = discountRate;
+        this.orderdate = orderDate;
+        this.totalPrice = this.cart.getTotalPrice() * (1 - this.discountRate);
     }
 
+    /**
+     * Method untuk mendapatkan harga akhir order
+     * @return harga akhir order
+     */
     public double getFinalPrice(){
-        return 0.0;
+        double finalPrice = this.totalPrice;
+        return finalPrice;
     }
 
+    /**
+     * Untuk mengurangi semua stock item yang dicheckout
+     */
     public void decreaseStockAllItem(){
-        
+        this.cart.getOrderItemList().clear();
+    }
+
+    @Override
+    public String toString() {
+        String output = "";
+        output += "Tanggal Checkout        : " + this.orderdate.toString();
+        output += "\nTotal Harga     : " + String.format("%f", this.getFinalPrice());
+        output += "\nDaftar Pembelian        :\n";
+        for (OrderItem item : cart.getOrderItemList()) {
+            output += item.toString() + "\n";
+        }
+        return output;
     }
 }

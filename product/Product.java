@@ -12,6 +12,7 @@ public abstract class Product {
         this.stock = stock;
     }
 
+    //Getter
     public int getPrice(){
         return this.price;
     }
@@ -24,15 +25,21 @@ public abstract class Product {
         return this.name;
     }
     
+    //Setter
     public void decreaseStock(int quantity){
         this.stock -= quantity;
     }
 
+    @Override
     public String toString(){
         return String.format("Produk %s memiliki stok %s", this.name, this.stock);  
     }
 
-    
+    /**
+     * Method untuk mendapatkan diskon produk
+     * @param quantity jumlah produk yang dibeli
+     * @return  diskon
+     */
     public abstract int checkDiscount(int quantity);
 
 }

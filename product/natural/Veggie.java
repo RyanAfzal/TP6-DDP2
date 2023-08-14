@@ -10,8 +10,13 @@ public class Veggie extends Product{
         super(name, price, stok);
         this.isOrganic = isOrganic;
     }
-
+    
     @Override
+    /**
+     * Method untuk mendapatkan diskon sayur (Override superclass nya (Product))
+     * @param quantity jumlah produk yang dibeli
+     * @return  diskon
+     */
     public int checkDiscount(int quantity){
         if(this.isOrganic){
             if(quantity >= 5)

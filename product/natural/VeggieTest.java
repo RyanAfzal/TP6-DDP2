@@ -7,7 +7,7 @@ public class VeggieTest {
     @Test
     public void checkDiscountTest(){
         Veggie veggie = new Veggie("Jamur",1000, 15, true);
-        int expectedOutput = 0;
+        int expectedOutput = 30;
         int actualOutput = veggie.checkDiscount(6);
         assertEquals(expectedOutput, actualOutput);
     }

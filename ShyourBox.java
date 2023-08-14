@@ -3,6 +3,7 @@ import java.util.Scanner;
 
 import customer.Customer;
 import customer.GoldCustomer;
+import order.Order;
 import order.OrderItem;
 import product.Product;
 import product.natural.Fruit;
@@ -23,6 +24,8 @@ public class ShyourBox {
 
         Scanner scanner = new Scanner(System.in);
         int choice;
+
+        //Untuk awal login
         do {
             System.out.println("Menu" +
                     "\n1. Login" +
@@ -34,15 +37,13 @@ public class ShyourBox {
                     System.out.println("Masukkan nama pengguna:");
                     String user = scanner.next();
                     //TODO: implement Login
-                    Customer customer = app.searchCustomer(user);
-                    if(customer == null){
+                    app.loginCustomer = app.searchCustomer(user);
+                    if(app.loginCustomer == null){
                         System.out.println("Customer tidak ditemukan");
+                        System.out.println();
+                        break;
                     }
-
-                    else{
-                        app.loginCustomer = customer;
-                        app.customerMenu();
-                    }
+                    app.customerMenu();
                     break;
                 case 0:
                     System.out.println("Sampai Jumpa!");
@@ -58,6 +59,8 @@ public class ShyourBox {
         
     }
 
+
+    //Menu yang dapat dipilih customer
     public void customerMenu(){
         Scanner scanner = new Scanner(System.in);
         int choice;
@@ -74,20 +77,21 @@ public class ShyourBox {
                 case 1:
                     //TODO : implement lihat keranjang
                     // use PrintGenericList for this feature
-                    lihatKeranjang();
+                    this.lihatKeranjang();
                     break;
                 case 2:
                     //TODO : Implement add to cart
-                    tambahProduk(scanner);
+                    this.tambahProduk(scanner);
                     break;
 
                 case 3:
                     //TODO: Implement Checkout
+                    this.checkout();
                     break;
                 case 4:
                    //TODO: Implement Order History
                    // use PrintGenericList for this feature
-
+                    this.lihatRiwayatPembelian();
                     break;
                 case 0:
                     this.loginCustomer = null;
@@ -126,8 +130,8 @@ public class ShyourBox {
     /**
      * Method untuk mencari produk berdasarkan nama.
      * 
-     * @param name
-     * @return
+     * @param name nama produk
+     * @return produk yang dicari
      */
     public Product searchProduct(String name) {
         // TODO: Implement this method.
@@ -140,26 +144,41 @@ public class ShyourBox {
         return null;
     }
 
+    /**
+     * Method untuk mencari customer berdasarkan nama
+     * @param name nama customer
+     * @return customer yang dicari
+     */
     public Customer searchCustomer(String name) {
         // TODO: Implement this method.
         for(Customer customer : customers){
-            if (customer.getName() != null && customer.getName().equalsIgnoreCase(name)){
+            if (customer.getName().equalsIgnoreCase(name)){
                 return customer;
             }
         }
 
         return null;
     }
-
+    
+    /**
+     * Method untuk handle menu customer 1
+     */
     public void lihatKeranjang() {
         if (this.loginCustomer.getCart().getOrderItemList().isEmpty()) {
             System.out.println("\nKeranjang Anda Kosong");
             return;
         }
-        System.out.println("Isi keranjang: ");
-        new PrintGenericList<>(this.loginCustomer.getCart().getOrderItemList()).printToConsole();
+        
+        else{
+            System.out.println("Isi keranjang: ");
+            new PrintGenericList<>(this.loginCustomer.getCart().getOrderItemList()).printToConsole();
+        }
     }
 
+    /**
+     * Method untuk handle menu customer 2
+     * @param scanner scanner untuk menerima input
+     */
     public void tambahProduk(Scanner scanner){
         for(Product product : products){
             System.out.println("- Produk " + product.getName() + " memiliki stok " + product.getStock());
@@ -184,6 +203,46 @@ public class ShyourBox {
         else{
             System.out.println("Produk tidak ditemukan");
         }
+    }
+
+    /**
+     * Method untuk handle menu customer 3
+     */
+    public void checkout(){
+        ArrayList<OrderItem> checkoutItemList = new ArrayList<>(); 
+        if (this.loginCustomer.getCart().getOrderItemList().isEmpty()) {
+            System.out.println("Keranjang Anda kosong");
+        }
+
+        else{
+            for (OrderItem orderItem : this.loginCustomer.getCart().getOrderItemList()) {
+                int quantity = orderItem.getQuantity();
+                for (Product product : products) {
+                    if (product.getName().equals(orderItem.getProduct().getName())) {
+                        if (product.getStock() < quantity) {
+                            System.out.println("Gagal checkout");
+                            return;
+                        }
+    
+                        else{
+                            checkoutItemList.add(orderItem);
+                            product.decreaseStock(quantity);
+                        }
+                    }
+                }
+            }
+            
+            this.loginCustomer.checkout();
+    
+            System.out.println("Berhasil Checkout");
+        }
+    }
+
+    /**
+     * Method untuk handle menu customer 4
+     */
+    public void lihatRiwayatPembelian(){
+        new PrintGenericList<>(this.loginCustomer.getOrderHistory()).printToConsole();
     }
 
 }

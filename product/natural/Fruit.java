@@ -11,6 +11,11 @@ public class Fruit extends Product{
     }
 
     @Override
+    /**
+     * Method untuk mendapatkan diskon buah (Override superclass nya (Product))
+     * @param quantity jumlah produk yang dibeli
+     * @return  diskon
+     */
     public int checkDiscount(int quantity){
         if(this.isLocal){
             if(quantity >= 5)

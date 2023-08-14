@@ -17,6 +17,11 @@ public class Diary extends Product{
     }
 
     @Override
+    /**
+     * Method untuk mendapatkan diskon produk (Override superclass nya (Product))
+     * @param quantity jumlah produk yang dibeli
+     * @return  diskon
+     */
     public int checkDiscount(int quantity) {
         long differentDate = ChronoUnit.DAYS.between(LocalDate.now(),this.expiredDate);
         if (differentDate < 30){

@@ -31,6 +31,13 @@ public class Cart {
      */
     public void addOrderItem(OrderItem orderItem) {
         // TODO: Implement this method.
+        //Jika di dalam keranjang sudah ada produk yang sama
+        for (OrderItem item : orderList) {
+            if (item.getProduct().getName().equals(orderItem.getProduct().getName())) {
+                item.setQuantity(item.getQuantity() + orderItem.getQuantity());
+                return;
+            }
+        }
         this.orderList.add(orderItem);
     }
 

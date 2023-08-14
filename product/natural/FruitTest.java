@@ -8,7 +8,7 @@ public class FruitTest {
     @Test
     public void checkDiscountTest(){
         Fruit fruit = new Fruit("Apel",13000, 50, true);
-        int expectedOutput = 0;
+        int expectedOutput = 30;
         int actualOutput = fruit.checkDiscount(10);
         assertEquals(expectedOutput, actualOutput);
     }

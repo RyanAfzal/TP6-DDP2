@@ -12,6 +12,10 @@ public class OrderItem {
 
     };
 
+    /**
+     * Untuk mendapatkan harga akhir item yang dibeli
+     * @return harga akhir item yang dibeli
+     */
     public double getFinalPrice() {
         double discount = this.product.checkDiscount(this.quantity);
         double price = (double) this.product.getPrice() * this.quantity;
@@ -19,6 +23,7 @@ public class OrderItem {
         return (price*(100-discount)/100);
     }
 
+    //Getter
     public Product getProduct() {
         return this.product;
     }
@@ -27,6 +32,12 @@ public class OrderItem {
         return this.quantity;
     }
 
+    //Setter
+    public void setQuantity(int quantity){
+        this.quantity = quantity;
+    }
+
+    @Override
     public String toString(){
         return String.format("%s  %d kg  %f", this.product.getName(), this.quantity, this.getFinalPrice());  
     }
