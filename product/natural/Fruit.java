@@ -10,6 +10,7 @@ public class Fruit extends Product{
         this.isLocal = isLocal;
     }
 
+    @Override
     public int checkDiscount(int quantity){
         if(this.isLocal){
             if(quantity >= 5)

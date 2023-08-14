@@ -11,6 +11,7 @@ public class Veggie extends Product{
         this.isOrganic = isOrganic;
     }
 
+    @Override
     public int checkDiscount(int quantity){
         if(this.isOrganic){
             if(quantity >= 5)

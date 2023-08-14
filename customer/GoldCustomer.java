@@ -6,4 +6,9 @@ public class GoldCustomer extends Customer {
     public GoldCustomer(String name){
         this.name = name;
     }  
+
+    @Override
+    public void checkout(){
+
+    }
 }

@@ -23,25 +23,23 @@ public class Customer implements CanShop{
         this.orderHistory = new ArrayList<>();
     }
 
+    @Override
     public void addToCart(Product product, int quantity){
         this.cart.addOrderItem(new OrderItem(product, quantity));
     }
 
+    @Override
     public void checkout(){
-        if (this.cart.getOrderItemList().isEmpty()){
-            System.out.println("Keranjang Anda kosong");
-        }
-
-        else{
-            for(OrderItem item : this.cart.getOrderItemList()){
-                
-            }
-        }
+        
     }
 
     //getter
     public String getName(){
         return name;
+    }
+
+    public Cart getCart(){
+        return cart;
     }
     
 }

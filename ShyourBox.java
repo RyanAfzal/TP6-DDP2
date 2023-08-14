@@ -74,38 +74,15 @@ public class ShyourBox {
                 case 1:
                     //TODO : implement lihat keranjang
                     // use PrintGenericList for this feature
+                    lihatKeranjang();
                     break;
                 case 2:
                     //TODO : Implement add to cart
-                    for(Product product : products){
-                        System.out.println("Produk " + product.getName() + " memiliki stok " + product.getStock());
-                    }
-                    System.out.println();
-
-                    System.out.print("Nama produk yang ingin dibeli: ");
-                    String produkDibeli = scanner.next();
-                    System.out.print("Masukan jumlah produk yang ingin dibeli : ");
-                    int jmlProduk = scanner.nextInt();
-
-                    if(searchProduct(produkDibeli) != null){
-                        if(searchProduct(produkDibeli).getStock() >= jmlProduk){
-                            this.loginCustomer.addToCart(searchProduct(produkDibeli), jmlProduk);
-                            System.out.println("Berhasil menambahkan " + produkDibeli + " ke keranjang");
-                        }
-                        else{
-                            System.out.println("Stok produk tidak mencukupi");
-                        } 
-                    }
-
-                    else{
-                        System.out.println("Produk tidak ditemukan");
-                    }
-
+                    tambahProduk(scanner);
                     break;
 
                 case 3:
                     //TODO: Implement Checkout
-                    this.loginCustomer.checkout();
                     break;
                 case 4:
                    //TODO: Implement Order History
@@ -113,6 +90,7 @@ public class ShyourBox {
 
                     break;
                 case 0:
+                    this.loginCustomer = null;
                     System.err.println("Sampai Jumpa Kembali!");
                     break;
                 default:
@@ -171,6 +149,41 @@ public class ShyourBox {
         }
 
         return null;
+    }
+
+    public void lihatKeranjang() {
+        if (this.loginCustomer.getCart().getOrderItemList().isEmpty()) {
+            System.out.println("\nKeranjang Anda Kosong");
+            return;
+        }
+        System.out.println("Isi keranjang: ");
+        new PrintGenericList<>(this.loginCustomer.getCart().getOrderItemList()).printToConsole();
+    }
+
+    public void tambahProduk(Scanner scanner){
+        for(Product product : products){
+            System.out.println("- Produk " + product.getName() + " memiliki stok " + product.getStock());
+        }
+        System.out.println();
+
+        System.out.print("Nama produk yang ingin dibeli: ");
+        String produkDibeli = scanner.next();
+        System.out.print("Masukan jumlah produk yang ingin dibeli : ");
+        int jmlProduk = scanner.nextInt();
+
+        if(searchProduct(produkDibeli) != null){
+            if(searchProduct(produkDibeli).getStock() >= jmlProduk){
+                this.loginCustomer.addToCart(searchProduct(produkDibeli), jmlProduk);
+                System.out.println("Berhasil menambahkan " + produkDibeli + " ke keranjang");
+            }
+            else{
+                System.out.println("Stok produk tidak mencukupi");
+            } 
+        }
+
+        else{
+            System.out.println("Produk tidak ditemukan");
+        }
     }
 
 }
