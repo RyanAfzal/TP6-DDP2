@@ -37,11 +37,11 @@ public class Customer implements CanShop{
      * Method untuk checkout customer (Override interface)
      */
     public void checkout(){
-        Order order = null;
-        order = new Order(this.cart, 0, LocalDate.now());
+        Order order = new Order(this.cart, 0, LocalDate.now());
 
         this.orderHistory.add(order);
         order.decreaseStockAllItem();
+        this.cart = new Cart();
     }
 
     //getter

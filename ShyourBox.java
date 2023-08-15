@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 import customer.Customer;
@@ -23,7 +24,7 @@ public class ShyourBox {
         app.initCustomers();
 
         Scanner scanner = new Scanner(System.in);
-        int choice;
+        int choice = -1;
 
         //Untuk awal login
         do {
@@ -31,27 +32,34 @@ public class ShyourBox {
                     "\n1. Login" +
                     "\n0. Keluar");
             System.out.print("Pilih menu: ");
-            choice = scanner.nextInt();
-            switch (choice){
-                case 1:
-                    System.out.println("Masukkan nama pengguna:");
-                    String user = scanner.next();
-                    //TODO: implement Login
-                    app.loginCustomer = app.searchCustomer(user);
-                    if(app.loginCustomer == null){
-                        System.out.println("Customer tidak ditemukan");
-                        System.out.println();
+            try{
+                choice = scanner.nextInt();
+                switch (choice){
+                    case 1:
+                        System.out.println("Masukkan nama pengguna:");
+                        String user = scanner.next();
+                        //TODO: implement Login
+                        app.loginCustomer = app.searchCustomer(user);
+                        if(app.loginCustomer == null){
+                            System.out.println("Customer tidak ditemukan");
+                            System.out.println();
+                            break;
+                        }
+                        app.customerMenu();
                         break;
-                    }
-                    app.customerMenu();
-                    break;
-                case 0:
-                    System.out.println("Sampai Jumpa!");
-                    break;
+                    case 0:
+                        System.out.println("Sampai Jumpa!");
+                        break;
 
-                default:
-                    System.out.println("Pilihan menu tidak valid.");
-                    break;
+                    default:
+                        System.out.println("Pilihan menu tidak valid.");
+                        break;
+                }
+            }
+
+            catch(InputMismatchException e){
+                scanner.nextLine();
+                System.out.println("Input harus bilangan bulat (0-4)");
             }
 
         } while (choice != 0);
@@ -63,7 +71,7 @@ public class ShyourBox {
     //Menu yang dapat dipilih customer
     public void customerMenu(){
         Scanner scanner = new Scanner(System.in);
-        int choice;
+        int choice = -1;
         do {
             System.out.println("--------------Customer "+this.loginCustomer.getName()+ " Menu------------------" +
                     "\n1. Lihat Keranjang" +
@@ -72,35 +80,44 @@ public class ShyourBox {
                     "\n4. Riwayat Pemebelian" +
                     "\n0. Logout");
             System.out.print("Pilih menu: ");
-            choice = scanner.nextInt();
-            switch(choice){
-                case 1:
-                    //TODO : implement lihat keranjang
-                    // use PrintGenericList for this feature
-                    this.lihatKeranjang();
-                    break;
-                case 2:
-                    //TODO : Implement add to cart
-                    this.tambahProduk(scanner);
-                    break;
+            try{
+                choice = scanner.nextInt();
 
-                case 3:
-                    //TODO: Implement Checkout
-                    this.checkout();
-                    break;
-                case 4:
-                   //TODO: Implement Order History
-                   // use PrintGenericList for this feature
-                    this.lihatRiwayatPembelian();
-                    break;
-                case 0:
-                    this.loginCustomer = null;
-                    System.err.println("Sampai Jumpa Kembali!");
-                    break;
-                default:
-                    System.out.println("Pilihan menu tidak valid.");
-                    break;
+                switch(choice){
+                    case 1:
+                        //TODO : implement lihat keranjang
+                        // use PrintGenericList for this feature
+                        this.lihatKeranjang();
+                        break;
+                    case 2:
+                        //TODO : Implement add to cart
+                        this.tambahProduk(scanner);
+                        break;
+
+                    case 3:
+                        //TODO: Implement Checkout
+                        this.checkout();
+                        break;
+                    case 4:
+                    //TODO: Implement Order History
+                    // use PrintGenericList for this feature
+                        this.lihatRiwayatPembelian();
+                        break;
+                    case 0:
+                        this.loginCustomer = null;
+                        System.err.println("Sampai Jumpa Kembali!");
+                        break;
+                    default:
+                        System.out.println("Pilihan menu tidak valid.");
+                        break;
+                }
             }
+
+            catch(InputMismatchException e){
+                scanner.nextLine();
+                System.out.println("Input harus bilangan bulat (0-4)");
+            }
+
         } while (choice !=0);
        
     }
@@ -135,7 +152,7 @@ public class ShyourBox {
      */
     public Product searchProduct(String name) {
         // TODO: Implement this method.
-        for(Product product : products){
+        for(Product product : this.products){
             if (product.getName().equalsIgnoreCase(name)){
                 return product;
             }
@@ -209,7 +226,6 @@ public class ShyourBox {
      * Method untuk handle menu customer 3
      */
     public void checkout(){
-        ArrayList<OrderItem> checkoutItemList = new ArrayList<>(); 
         if (this.loginCustomer.getCart().getOrderItemList().isEmpty()) {
             System.out.println("Keranjang Anda kosong");
         }
@@ -225,8 +241,6 @@ public class ShyourBox {
                         }
     
                         else{
-                            checkoutItemList.add(orderItem);
-                            product.decreaseStock(quantity);
                         }
                     }
                 }

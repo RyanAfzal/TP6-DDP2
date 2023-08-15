@@ -2,6 +2,8 @@ package order;
 
 import java.time.LocalDate;
 
+import product.Product;
+
 public class Order {
     //TODO: Lengkapi kelas berikut
     private Cart cart;
@@ -29,7 +31,11 @@ public class Order {
      * Untuk mengurangi semua stock item yang dicheckout
      */
     public void decreaseStockAllItem(){
-        this.cart.getOrderItemList().clear();
+        for (OrderItem item : this.cart.getOrderItemList()){
+            Product product = item.getProduct();
+            int jmlDibeli = item.getQuantity();
+            product.decreaseStock(jmlDibeli);
+        }
     }
 
     @Override
